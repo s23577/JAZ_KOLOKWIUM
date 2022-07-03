@@ -17,45 +17,32 @@ public class MyCurrencyModel {
     @ApiModelProperty
     private Long id;
     @ApiModelProperty
-    private String code;
+    private double price;
     @ApiModelProperty
     private LocalDate fromDate;
     @ApiModelProperty
     private LocalDate toDate;
     @ApiModelProperty
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private int currencyNumbers;
     @ApiModelProperty
-    private Double average;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public MyCurrencyModel(){
 
     }
-
-    public MyCurrencyModel(Double average){
-        this.average=average;
+    public MyCurrencyModel(double cena){
+        this.price=cena;
     }
 
-    public MyCurrencyModel(String code, LocalDate fromDate, LocalDate toDate, double average) {
-        this.code = code;
+    public MyCurrencyModel(double price, LocalDate fromDate, LocalDate toDate, int currencyNumbers) {
+        this.price = price;
         this.fromDate = fromDate;
+        this.currencyNumbers=currencyNumbers;
         this.toDate = toDate;
-        this.average = average;
-    }
-
-    public Double getAverage() {
-        return average;
-    }
-
-    public void setAverage(Double average) {
-        this.average = average;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public void setFromDate(LocalDate fromDate) {
@@ -70,11 +57,6 @@ public class MyCurrencyModel {
         this.createdAt = createdAt;
     }
 
-
-    public String getCode() {
-        return code;
-    }
-
     public LocalDate getFromDate() {
         return fromDate;
     }
@@ -85,5 +67,25 @@ public class MyCurrencyModel {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getCurrencyNumbers() {
+        return currencyNumbers;
+    }
+
+    public void setCurrencyNumbers(int currencyNumbers) {
+        this.currencyNumbers = currencyNumbers;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
