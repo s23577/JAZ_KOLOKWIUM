@@ -17,6 +17,6 @@ public class RestControllerAdvice {
     @ExceptionHandler(RestClientException.class)
     public ResponseEntity<String> handlerRestClientException(){
         return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT)
-                .body("You exceeded the dates range! Please provide correct dates.");
+                .body("Can not connect with Client!");
     }
 }

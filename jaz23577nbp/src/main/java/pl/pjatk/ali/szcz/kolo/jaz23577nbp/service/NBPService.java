@@ -1,8 +1,12 @@
 package pl.pjatk.ali.szcz.kolo.jaz23577nbp.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
+import pl.pjatk.ali.szcz.kolo.jaz23577nbp.config.ResourceNotFoundException;
 import pl.pjatk.ali.szcz.kolo.jaz23577nbp.config.RestTemplateConfig;
 import pl.pjatk.ali.szcz.kolo.jaz23577nbp.model.MyCurrencyModel;
 import pl.pjatk.ali.szcz.kolo.jaz23577nbp.model.Rate;
@@ -23,26 +27,21 @@ public class NBPService {
     }
     public MyCurrencyModel getNumbersOfCurrency(double price, LocalDate dateFrom, LocalDate dateTo) {
 
-//        ObjectMapper mapper = new ObjectMapper();
-//        Root jsonObj = mapper.readValue(jsonStr, Root.class);
-        String url = "https://api.nbp.pl/api/exchangerates/rates/a/" + dateFrom + "/" + dateTo;
-        ResponseEntity<Root> responseEntity =
-                restTemplateConfig.restTemplate().getForEntity(url, Root.class);
-
-        ArrayList<Root> rootArray = responseEntity.getBody();
-
-
-//        ArrayList<Root> data = restTemplateConfig.restTemplate().getForObject("http://api.nbp.pl/api/exchangerates/tables/a" + "/{fromDate}/{toDate}", Root.class, dateFrom, dateTo);
-        ArrayList<Rate> rates = data.getRates();
-        int currencyNumber = 0;
-        for (Rate rate : rates) {
-            if (rate.getMid() > price) {
-                currencyNumber++;
+        try {
+            Root data = restTemplateConfig.restTemplate().getForObject("http://api.nbp.pl/api/exchangerates/tables/a" + "/{fromDate}/{toDate}", Root.class, dateFrom, dateTo);
+            ArrayList<Rate> rates = data.getRates();
+            int currencyNumber = 0;
+            for (Rate rate : rates) {
+                if (rate.getMid() > price) {
+                    currencyNumber++;
+                }
             }
+            MyCurrencyModel dataToSave = new MyCurrencyModel(price, dateFrom, dateTo, currencyNumber);
+            return nbpRepository.save(dataToSave);
+        } catch (HttpClientErrorException.NotFound e) {
+            throw new ResourceNotFoundException();
+        } catch (RestClientException e) {
+            throw new RestClientException("");
         }
-        MyCurrencyModel dataToSave = new MyCurrencyModel(price, dateFrom, dateTo, currencyNumber);
-        return nbpRepository.save(dataToSave);
     }
-
-
 }

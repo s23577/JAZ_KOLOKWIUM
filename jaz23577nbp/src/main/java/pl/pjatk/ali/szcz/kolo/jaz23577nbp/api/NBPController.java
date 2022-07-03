@@ -25,7 +25,7 @@ public class NBPController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Data properly loaded"),
             @ApiResponse(code = 504, message = "Connection with NBP failed."),
-            @ApiResponse(code = 400, message = "Unproper url")
+            @ApiResponse(code = 404, message = "Unproper url provided. Try to add proper data. Check it on NBP API documentation.")
     })
     @GetMapping("/getAmount/{price}/{fromDate}/{toDate}")
     public ResponseEntity<MyCurrencyModel> getCurrencyNumber(@PathVariable String price, @PathVariable String fromDate, @PathVariable String toDate){
