@@ -1,5 +1,7 @@
 package pl.pjatk.ali.szcz.kolo.jaz23577nbp.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.pjatk.ali.szcz.kolo.jaz23577nbp.config.RestTemplateConfig;
 import pl.pjatk.ali.szcz.kolo.jaz23577nbp.model.MyCurrencyModel;
@@ -20,7 +22,17 @@ public class NBPService {
         this.restTemplateConfig = restTemplateConfig;
     }
     public MyCurrencyModel getNumbersOfCurrency(double price, LocalDate dateFrom, LocalDate dateTo) {
-        Root data = restTemplateConfig.restTemplate().getForObject("http://api.nbp.pl/api/exchangerates/tables/a/" + "/{fromDate}/{toDate}", Root.class, price, dateFrom, dateTo);
+
+//        ObjectMapper mapper = new ObjectMapper();
+//        Root jsonObj = mapper.readValue(jsonStr, Root.class);
+        String url = "https://api.nbp.pl/api/exchangerates/rates/a/" + dateFrom + "/" + dateTo;
+        ResponseEntity<Root> responseEntity =
+                restTemplateConfig.restTemplate().getForEntity(url, Root.class);
+
+        ArrayList<Root> rootArray = responseEntity.getBody();
+
+
+//        ArrayList<Root> data = restTemplateConfig.restTemplate().getForObject("http://api.nbp.pl/api/exchangerates/tables/a" + "/{fromDate}/{toDate}", Root.class, dateFrom, dateTo);
         ArrayList<Rate> rates = data.getRates();
         int currencyNumber = 0;
         for (Rate rate : rates) {

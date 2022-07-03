@@ -1,6 +1,8 @@
 package pl.pjatk.ali.szcz.kolo.jaz23577nbp.api;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,11 @@ public class NBPController {
     }
 
     @ApiOperation("Get amount of currencies which are above the average price")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Data properly loaded"),
+            @ApiResponse(code = 504, message = "Connection with NBP failed."),
+            @ApiResponse(code = 400, message = "Unproper url")
+    })
     @GetMapping("/getAmount/{price}/{fromDate}/{toDate}")
     public ResponseEntity<MyCurrencyModel> getCurrencyNumber(@PathVariable String price, @PathVariable String fromDate, @PathVariable String toDate){
         LocalDate from_date = LocalDate.parse(fromDate);
