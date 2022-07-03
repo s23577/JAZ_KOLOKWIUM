@@ -1,6 +1,10 @@
 package pl.pjatk.ali.szcz.kolo.jaz23577nbp.model;
 
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -23,15 +27,15 @@ public class MyCurrencyModel {
     @ApiModelProperty
     private Double average;
 
-    public MyCurrency(){
+    public MyCurrencyModel(){
 
     }
 
-    public MyCurrency(Double average){
+    public MyCurrencyModel(Double average){
         this.average=average;
     }
 
-    public MyCurrency(String code, LocalDate fromDate, LocalDate toDate, double average) {
+    public MyCurrencyModel(String code, LocalDate fromDate, LocalDate toDate, double average) {
         this.code = code;
         this.fromDate = fromDate;
         this.toDate = toDate;
